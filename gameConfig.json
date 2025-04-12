@@ -1,0 +1,20 @@
+{
+  "goldRate": 0.001,
+  "clickRate": 0.5,
+  "bagSlots": 4,
+  "gearSlotsEnabled": false,
+  "loot": [],
+  "enemies": [],
+  "upgrades": [
+    {
+      "name": "Hire Active Merc",
+      "target": "Click Gold",
+      "value": "0.25"
+    },
+    {
+      "name": "Hire Idle Merc",
+      "target": "Base Gold/sec",
+      "value": "0.10"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Idle Clicker Game Maker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Sidebar Config Panel -->
+    <aside id="sidebar">
+      <h2>Game Config</h2>
+
+      <section class="panel" id="gold-config">
+        <h3>Gold Generation</h3>
+        <label>Base Gold/sec <input type="number" id="base-gold-rate" /></label>
+        <label>Click Gold <input type="number" id="click-gold-rate" /></label>
+      </section>
+
+      <section class="panel" id="loot-config">
+        <h3>Loot Table</h3>
+        <button id="add-loot">Add Item</button>
+        <div id="loot-list"></div>
+      </section>
+
+      <section class="panel" id="enemy-config">
+        <h3>Enemies</h3>
+        <button id="add-enemy">Add Enemy</button>
+        <div id="enemy-list"></div>
+      </section>
+
+      <section class="panel" id="inventory-config">
+        <h3>Inventory & Gear</h3>
+        <label>Starting Bag Slots <input type="number" id="bag-slots" /></label>
+        <label>Enable Gear Slots <input type="checkbox" id="enable-gear-slots" /></label>
+      </section>
+
+      <section class="panel" id="upgrades-config">
+        <h3>Upgrade System</h3>
+        <button id="add-upgrade">Add Upgrade</button>
+        <div id="upgrade-list"></div>
+      </section>
+
+      <section class="panel" id="save-load">
+        <h3>Save/Load</h3>
+        <button id="export-config">Export Config</button>
+        <button id="import-config">Import Config</button>
+        <input type="file" id="config-file" style="display: none;" />
+      </section>
+    </aside>
+
+    <!-- Game Preview Area -->
+    <main id="preview">
+      <h2>Live Game Preview</h2>
+      <iframe id="game-frame" src="game.html"></iframe>
+    </main>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>

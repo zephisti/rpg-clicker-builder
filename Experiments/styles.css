@@ -1,0 +1,196 @@
+/* styles.css */
+
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
+
+body {
+ font-family: 'MedievalSharp', serif;
+ background-color: #333;
+ color: #ddd;
+ margin: 0;
+ padding: 0;
+ background-image: url('UI_Background.png'); /* Replace with your texture */
+ background-size: cover;
+ background-repeat: no-repeat;
+ background-attachment: fixed;
+}
+
+h1 {
+ text-align: center;
+ margin-bottom: 20px;
+ color: #e6c26f;
+ text-shadow: 2px 2px 4px #000000;
+}
+
+#game-container {
+ width: 90%;
+ max-width: 800px;
+ margin: 20px auto;
+ background-color: rgba(0, 0, 0, 0.8);
+ padding: 20px;
+ border: 2px solid #555;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#click-area {
+ text-align: center;
+ margin-bottom: 20px;
+}
+
+#click-button {
+ padding: 10px 20px;
+ font-size: 1.2em;
+ background-color: #444;
+ color: #fff;
+ border: 1px solid #666;
+ cursor: pointer;
+ transition: background-color 0.3s;
+}
+
+#click-button:hover {
+ background-color: #555;
+}
+
+#click-button:active {
+ background-color: #333;
+}
+
+#coin-counter {
+ font-size: 1.5em;
+ margin-top: 10px;
+ color: #e6c26f;
+ text-shadow: 1px 1px 2px #000000;
+}
+
+#tabs {
+ display: flex;
+ justify-content: space-around;
+ margin-bottom: 10px;
+}
+
+.tab {
+ padding: 8px 16px;
+ font-size: 1em;
+ background-color: #444;
+ color: #fff;
+ border: 1px solid #666;
+ cursor: pointer;
+ transition: background-color 0.3s;
+}
+
+.tab:hover {
+ background-color: #555;
+}
+
+.tab.active {
+ background-color: #555;
+ color: #e6c26f;
+}
+
+#tab-content {
+ border-top: 2px solid #555;
+ padding-top: 10px;
+}
+
+.tab-panel {
+ display: none;
+}
+
+.tab-panel h2 {
+ margin-top: 0;
+ color: #e6c26f;
+ text-shadow: 1px 1px 2px #000000;
+}
+
+#character {
+ display: flex;
+ justify-content: space-between;
+}
+
+#paper-doll {
+ display: grid;
+ grid-template-columns: repeat(3, 50px);
+ grid-template-rows: repeat(3, 50px);
+ gap: 2px;
+ margin-right: 20px;
+}
+
+.slot {
+ background-color: #222;
+ border: 1px solid #444;
+}
+
+#character-stats div {
+ margin-bottom: 5px;
+}
+
+#character-stats button {
+ padding: 5px 10px;
+ background-color: #444;
+ color: #fff;
+ border: 1px solid #666;
+ cursor: pointer;
+ transition: background-color 0.3s;
+}
+
+#character-stats button:hover {
+ background-color: #555;
+}
+
+#inventory-grid {
+ display: grid;
+ grid-template-columns: repeat(5, 50px);
+ grid-template-rows: repeat(5, 50px);
+ gap: 2px;
+}
+
+#inventory-grid div {
+ background-color: #222;
+ border: 1px solid #444;
+}
+
+#upgrades-list button {
+ display: block;
+ width: 200px;
+ margin-bottom: 10px;
+ padding: 10px;
+ background-color: #444;
+ color: #fff;
+ border: 1px solid #666;
+ cursor: pointer;
+ transition: background-color 0.3s;
+}
+
+#upgrades-list button:hover {
+ background-color: #555;
+}
+
+#tooltip {
+ position: absolute;
+ background-color: rgba(0, 0, 0, 0.9);
+ border: 1px solid #555;
+ color: #fff;
+ padding: 10px;
+ display: none;
+ pointer-events: none;
+}
+
+/* Rarity Colors */
+.item-common {
+ border-color: lightgray;
+}
+
+.item-uncommon {
+ border-color: limegreen;
+}
+
+.item-rare {
+ border-color: lightblue;
+}
+
+.item-epic {
+ border-color: lightpurple;
+}
+
+.item-legendary {
+ border-color: orange;
+}

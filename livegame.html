@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Live Game</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #111;
+      color: #fff;
+      padding: 20px;
+    }
+    h2 {
+      color: #ffcc00;
+    }
+    .section { margin-bottom: 20px; }
+    ul { list-style: none; padding: 0; }
+    #click-button, #attack-button, .buy-upgrade-btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+    #click-button:hover, #attack-button:hover, .buy-upgrade-btn:hover {
+      background-color: #34d058;
+    }
+    .enemy-box {
+      padding: 10px;
+      background: #222;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+    .upgrade-item {
+      background-color: #222;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Live Game</h2>
+  <div class="section">
+    <strong>Gold:</strong> <span id="gold">0</span><br>
+    <button id="click-button">Click Me!</button>
+  </div>
+  <div class="section">
+    <strong>Gold/sec:</strong> <span id="goldRate"></span><br>
+    <strong>Click Gold:</strong> <span id="clickRate"></span><br>
+    <strong>Bag Slots:</strong> <span id="bagSlots"></span><br>
+    <strong>Gear Slots Enabled:</strong> <span id="gearSlots"></span>
+  </div>
+  <div class="section enemy-box" id="enemy-area" style="display:none;">
+    <h3>Enemy: <span id="enemyName"></span></h3>
+    <div>HP: <span id="enemyHP"></span></div>
+    <button id="attack-button">Attack!</button>
+  </div>
+  <div class="section">
+    <h3>Loot Table</h3>
+    <ul id="lootList"></ul>
+  </div>
+  <div class="section">
+    <h3>Enemies</h3>
+    <ul id="enemyList"></ul>
+  </div>
+  <div class="section">
+    <h3>Upgrades</h3>
+    <div id="upgradeList"></div>
+  </div>
+
+  <script>
+    let gold = 0, clickRate = 1, goldRate = 0, damagePerClick = 5;
+    let enemy = null, enemyHP = 0, enemyList = [], lootList = [], upgradeStore = [];
+
+    const goldDisplay = document.getElementById("gold");
+    const goldRateDisplay = document.getElementById("goldRate");
+    const clickRateDisplay = document.getElementById("clickRate");
+    const enemyArea = document.getElementById("enemy-area");
+    const enemyNameDisplay = document.getElementById("enemyName");
+    const enemyHPDisplay = document.getElementById("enemyHP");
+
+    document.getElementById("click-button").onclick = () => {
+      gold += clickRate;
+      updateGoldDisplay();
+    };
+
+    document.getElementById("attack-button").onclick = () => {
+      if (!enemy) return;
+      enemyHP -= damagePerClick;
+      if (enemyHP <= 0) {
+        gold += 10;
+        maybeDropLoot();
+        spawnEnemy();
+      } else {
+        enemyHPDisplay.textContent = enemyHP;
+      }
+      updateGoldDisplay();
+    };
+
+    function updateGoldDisplay() {
+      goldDisplay.textContent = gold.toFixed(1);
+      goldRateDisplay.textContent = goldRate.toFixed(1);
+      clickRateDisplay.textContent = clickRate.toFixed(1);
+    }
+
+    function renderList(id, items) {
+      const ul = document.getElementById(id);
+      ul.innerHTML = "";
+      (items || []).forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = `${item.name} (${item.value || item.target})`;
+        ul.appendChild(li);
+      });
+    }
+
+    function spawnEnemy() {
+      if (!enemyList.length) return;
+      enemy = enemyList[Math.floor(Math.random() * enemyList.length)];
+      enemyHP = parseInt(enemy.value || 20);
+      enemyArea.style.display = "block";
+      enemyNameDisplay.textContent = enemy.name;
+      enemyHPDisplay.textContent = enemyHP;
+    }
+
+    function maybeDropLoot() {
+      if (!lootList.length) return;
+      if (Math.random() < 0.5) {
+        const loot = lootList[Math.floor(Math.random() * lootList.length)];
+        alert(`You found loot: ${loot.name} (${loot.value})`);
+      }
+    }
+
+    function renderUpgrades(upgrades) {
+      const container = document.getElementById("upgradeList");
+      container.innerHTML = "";
+      upgrades.forEach((upg) => {
+        upg.level = 0;
+        upg.baseCost = parseInt(upg.cost) || 25;
+        const div = document.createElement("div");
+        div.className = "upgrade-item";
+        const name = document.createElement("div");
+        name.textContent = `${upg.name} (${upg.target})`;
+        const costDisplay = document.createElement("div");
+        costDisplay.textContent = `Cost: ${upg.baseCost}`;
+        const contribution = document.createElement("div");
+        contribution.textContent = `${upg.target} Contribution: 0`;
+        const button = document.createElement("button");
+        button.className = "buy-upgrade-btn";
+        button.textContent = "Buy Upgrade";
+        button.onclick = () => {
+          const cost = Math.floor(upg.baseCost * Math.pow(1.15, upg.level));
+          if (gold >= cost) {
+            gold -= cost;
+            upg.level++;
+            const totalBoost = parseFloat(upg.value) * upg.level;
+            if (upg.target === "Click Gold") {
+              clickRate += parseFloat(upg.value);
+              contribution.textContent = `Click Gold Contribution: ${totalBoost}`;
+            } else if (upg.target === "Base Gold/sec") {
+              goldRate += parseFloat(upg.value);
+              contribution.textContent = `Base Gold/sec Contribution: ${totalBoost}`;
+            }
+            updateGoldDisplay();
+            costDisplay.textContent = `Cost: ${Math.floor(upg.baseCost * Math.pow(1.15, upg.level))}`;
+          }
+        };
+        div.appendChild(name);
+        div.appendChild(costDisplay);
+        div.appendChild(contribution);
+        div.appendChild(button);
+        container.appendChild(div);
+      });
+    }
+
+    fetch('gameConfig.json')
+      .then(res => res.json())
+      .then(config => {
+        gold = 0;
+        clickRate = parseFloat(config.clickRate || 1);
+        goldRate = parseFloat(config.goldRate || 0);
+        enemyList = config.enemies || [];
+        lootList = config.loot || [];
+        upgradeStore = config.upgrades || [];
+        document.getElementById("bagSlots").textContent = config.bagSlots;
+        document.getElementById("gearSlots").textContent = config.gearSlotsEnabled ? "Yes" : "No";
+        renderList("lootList", lootList);
+        renderList("enemyList", enemyList);
+        renderUpgrades(upgradeStore);
+        updateGoldDisplay();
+        spawnEnemy();
+        setInterval(() => {
+          gold += goldRate / 10;
+          updateGoldDisplay();
+        }, 100);
+      })
+      .catch(err => alert("Failed to load gameConfig.json"));
+  </script>
+</body>
+</html>
